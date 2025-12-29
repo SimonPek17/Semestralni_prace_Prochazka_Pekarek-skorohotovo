@@ -1,0 +1,629 @@
+﻿<Window x:Class="Semestralni_prace_Prochazka_Pekarek.Views.MaterialEdit"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:local="clr-namespace:Semestralni_prace_Prochazka_Pekarek.Views"
+       mc:Ignorable="d"
+        Title="Správa" Height="720" Width="1180"
+       WindowStartupLocation="CenterScreen"
+       Background="#F3F6FB">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- TOP BAR -->
+        <Border Grid.Row="0"
+               CornerRadius="6"
+               Background="#D9E9FF"
+               BorderBrush="#B7D3FF"
+               BorderThickness="1"
+               Padding="10"
+               Margin="0,0,0,10">
+            <DockPanel LastChildFill="True">
+                <!-- Tabs -->
+                <TabControl DockPanel.Dock="Left"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           Margin="0,0,10,0"
+                           Height="32">
+                    <TabControl.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="FontSize" Value="13"/>
+                            <Setter Property="Padding" Value="14,6"/>
+                            <Setter Property="Margin" Value="0,0,6,0"/>
+                            <Setter Property="Background" Value="#EAF3FF"/>
+                            <Setter Property="BorderBrush" Value="#B7D3FF"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Background="{TemplateBinding Background}"
+                                               BorderBrush="{TemplateBinding BorderBrush}"
+                                               BorderThickness="{TemplateBinding BorderThickness}"
+                                               CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                             VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#FFFFFF"/>
+                                                <Setter Property="BorderBrush" Value="#6AA8FF"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="BorderBrush" Value="#6AA8FF"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.Resources>
+
+                    <!-- NOTE: Tab headers only, content is below in main TabControl -->
+                    <TabItem Header="Zákazníci" IsSelected="True"/>
+                    <TabItem Header="Vozidla"/>
+                    <TabItem Header="Pronájmy"/>
+                    <TabItem Header="Pokuty"/>
+                </TabControl>
+
+                <!-- Right side actions -->
+                <StackPanel DockPanel.Dock="Right"
+                           Orientation="Horizontal"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Margin="10,0,0,0">
+                    <Button Content="⎋ Odhlásit"
+                           Padding="12,6"
+                           Background="#FFFFFF"
+                           BorderBrush="#B7D3FF"
+                           BorderThickness="1"
+                           Cursor="Hand"/>
+                </StackPanel>
+
+                <TextBlock VerticalAlignment="Center"
+                          Foreground="#2E3A4A"
+                          FontWeight="SemiBold"
+                          Text="Správa systému"
+                          Margin="6,0,0,0"/>
+            </DockPanel>
+        </Border>
+
+        <!-- MAIN TABS CONTENT -->
+        <TabControl Grid.Row="1"
+                   Background="Transparent"
+                   BorderThickness="0"
+                   Margin="0">
+            <!-- ZAKAZNICI -->
+            <TabItem Header="Zákazníci">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header + search -->
+                    <Border Grid.Row="0" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Správa zákazníků" FontSize="18" FontWeight="Bold" Foreground="#1F2A37"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="Hledat:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Width="300" Height="28" Padding="10,4"
+                                            BorderBrush="#C9D7EE" BorderThickness="1"
+                                            Background="#F8FBFF"
+                                            Text=""/>
+                                    <Button Content="🔍" Width="36" Height="28" Margin="8,0,0,0"
+                                           Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                    <TextBlock Text="Přidávat zákaz..." Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#6B7280"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                                <Button Content="⬇ Export"
+                                       Padding="10,6"
+                                       Margin="0,0,8,0"
+                                       Background="#FFFFFF"
+                                       BorderBrush="#C9D7EE"
+                                       BorderThickness="1"/>
+                                <Button Content="↻"
+                                       Width="34" Height="30"
+                                       Background="#FFFFFF"
+                                       BorderBrush="#C9D7EE"
+                                       BorderThickness="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Data grid -->
+                    <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="10">
+                        <DataGrid AutoGenerateColumns="False"
+                                 CanUserAddRows="False"
+                                 HeadersVisibility="Column"
+                                 GridLinesVisibility="Horizontal"
+                                 RowHeaderWidth="0"
+                                 BorderThickness="0"
+                                 Background="White"
+                                 AlternatingRowBackground="#F7FAFF">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding ID_Zakaznik}" Width="60"/>
+                                <DataGridTextColumn Header="Jméno" Binding="{Binding Jmeno}" Width="*"/>
+                                <DataGridTextColumn Header="Příjmení" Binding="{Binding Prijmeni}" Width="*"/>
+                                <DataGridTextColumn Header="Telefon" Binding="{Binding Telefon}" Width="140"/>
+                                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="220"/>
+                                <DataGridTextColumn Header="Počet pronájmů" Binding="{Binding PocetPronajmu}" Width="130"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <!-- Bottom form + buttons -->
+                    <Border Grid.Row="2" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,10,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Jméno:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Height="28" Margin="0,0,10,8"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Příjmení:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Height="28" Margin="0,0,10,8"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="Telefon:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="5" Height="28" Margin="0,0,0,8"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Email:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Height="28" Margin="0,0,10,0"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Adresa:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Height="28" Margin="0,0,10,0"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="4" Text="Počet pronájmů:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="5" Height="28"/>
+                            </Grid>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                                <Button Content="➕ Přidat zákazníka"
+                                       Padding="12,7"
+                                       Margin="0,0,8,0"
+                                       Background="#2F80ED"
+                                       Foreground="White"
+                                       BorderThickness="0"
+                                       Cursor="Hand"/>
+                                <Button Content="✎ Upravit"
+                                       Padding="12,7"
+                                       Margin="0,0,8,0"
+                                       Background="#FFFFFF"
+                                       BorderBrush="#C9D7EE"
+                                       BorderThickness="1"/>
+                                <Button Content="🗑 Smazat"
+                                       Padding="12,7"
+                                       Background="#FFFFFF"
+                                       BorderBrush="#F0B4B4"
+                                       BorderThickness="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- VOZIDLA -->
+            <TabItem Header="Vozidla">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="138*"/>
+                        <ColumnDefinition Width="1015*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Správa vozidel" FontSize="18" FontWeight="Bold" Foreground="#1F2A37"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <TextBlock Text="Hledat:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Width="320" Height="28" Padding="10,4"
+                                            BorderBrush="#C9D7EE" BorderThickness="1"
+                                            Background="#F8FBFF"/>
+                                    <Button Content="🔍" Width="36" Height="28" Margin="8,0,0,0"
+                                           Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                    <TextBlock Text="Přidat SPZ až název/model" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#6B7280"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button Content="⬇ Export" Padding="10,6" Margin="0,0,8,0"
+                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                <Button Content="↻" Width="34" Height="30"
+                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="10" Grid.ColumnSpan="2">
+                        <DataGrid AutoGenerateColumns="False"
+                                 CanUserAddRows="False"
+                                 RowHeaderWidth="0"
+                                 BorderThickness="0"
+                                 AlternatingRowBackground="#F7FAFF">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding ID_Auto}" Width="60"/>
+                                <DataGridTextColumn Header="SPZ" Binding="{Binding SPZ}" Width="120"/>
+                                <DataGridTextColumn Header="Značka" Binding="{Binding Znacka}" Width="140"/>
+                                <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="140"/>
+                                <DataGridTextColumn Header="Rok výroby" Binding="{Binding RokVyroby}" Width="110"/>
+                                <DataGridTextColumn Header="Tachometr (km)" Binding="{Binding StavTachometru}" Width="140"/>
+                                <DataGridTextColumn Header="Denní sazba (Kč)" Binding="{Binding DenniSazba}" Width="140"/>
+                                <DataGridTextColumn Header="Stav" Binding="{Binding Stav}" Width="90"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <Border Grid.Row="2" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,10,0,0" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="SPZ:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Height="28" Margin="0,0,10,8"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Značka:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Height="28" Margin="0,0,10,8"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="Model:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="5" Height="28" Margin="0,0,0,8"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Tachometr:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Height="28" Margin="0,0,10,0"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Denní sazba:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Height="28" Margin="0,0,10,0"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="4" Text="Stav:" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="1" Grid.Column="5" Height="28"/>
+                            </Grid>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                                <Button Content="➕ Přidat vozidlo"
+                                       Padding="12,7"
+                                       Margin="0,0,8,0"
+                                       Background="#2F80ED"
+                                       Foreground="White"
+                                       BorderThickness="0"
+                                       Cursor="Hand"/>
+                                <Button Content="✎ Upravit" Padding="12,7" Margin="0,0,8,0"
+                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                <Button Content="🗑 Smazat" Padding="12,7"
+                                       Background="#FFFFFF" BorderBrush="#F0B4B4" BorderThickness="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- PRONAJMY -->
+            <TabItem Header="Pronájmy">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Správa pronájmů" FontSize="18" FontWeight="Bold" Foreground="#1F2A37"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <TextBlock Text="Hledat:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Width="360" Height="28" Padding="10,4"
+                                            BorderBrush="#C9D7EE" BorderThickness="1"
+                                            Background="#F8FBFF"/>
+                                    <Button Content="🔍" Width="36" Height="28" Margin="8,0,0,0"
+                                           Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button Content="🧾 Pokladna" Padding="10,6" Margin="0,0,8,0"
+                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                <Button Content="↻" Width="34" Height="30"
+                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="10">
+                        <DataGrid AutoGenerateColumns="False"
+                                 CanUserAddRows="False"
+                                 RowHeaderWidth="0"
+                                 BorderThickness="0"
+                                 AlternatingRowBackground="#F7FAFF">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding ID_Pronajem}" Width="60"/>
+                                <DataGridTextColumn Header="Zákazník" Binding="{Binding Zakaznik}" Width="220"/>
+                                <DataGridTextColumn Header="Vozidlo" Binding="{Binding Vozidlo}" Width="220"/>
+                                <DataGridTextColumn Header="Datum od" Binding="{Binding DatumOd}" Width="110"/>
+                                <DataGridTextColumn Header="Datum do" Binding="{Binding DatumDo}" Width="110"/>
+                                <DataGridTextColumn Header="Cena celkem (Kč)" Binding="{Binding CenaCelkem}" Width="140"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <Border Grid.Row="2"
+       CornerRadius="6"
+       Background="#FFFFFF"
+       BorderBrush="#E3EAF5"
+       BorderThickness="1"
+       Padding="16"
+       Margin="0,10,0,0">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- FORM -->
+                            <Grid Grid.Row="0" Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- ROW 1 -->
+                                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,8">
+                                    <TextBlock Text="Pronájem"/>
+                                    <ComboBox Height="28"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,12,8">
+                                    <TextBlock Text="Datum od"/>
+                                    <DatePicker Height="28"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,12,8">
+                                    <TextBlock Text="Datum do"/>
+                                    <DatePicker Height="28"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0" Grid.Column="3" Margin="0,0,0,8">
+                                    <TextBlock Text="Stav"/>
+                                    <TextBox Height="28" IsReadOnly="True"/>
+                                </StackPanel>
+
+                                <!-- ROW 2 -->
+                                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,0">
+                                    <TextBlock Text="Částka"/>
+                                    <TextBox Height="28"/>
+                                </StackPanel>
+
+                                
+                                <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,12,0">
+                                    <TextBlock Text="Zákazník (volitelně)"/>
+                                    <ComboBox Height="28"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1" Grid.Column="3">
+                                    <TextBlock Text="Vozidlo (volitelně)"/>
+                                    <ComboBox Height="28"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- BUTTONS -->
+                            <StackPanel Grid.Row="1"
+                   Orientation="Horizontal"
+                   HorizontalAlignment="Right"
+                   Margin="0,8,0,0">
+
+                                <Button Content="➕ Přidat pronájem"
+                   Padding="16,8"
+                   Margin="0,0,10,0"
+                   Background="#2F80ED"
+                   Foreground="White"
+                   BorderThickness="0"/>
+
+                                <Button Content="✎ Upravit"
+                   Padding="16,8"
+                   Margin="0,0,10,0"
+                   Background="#FFFFFF"
+                   BorderBrush="#C9D7EE"
+                   BorderThickness="1"/>
+
+                                <Button Content="🗑 Smazat"
+                   Padding="16,8"
+                   Background="#FFFFFF"
+                   BorderBrush="#F0B4B4"
+                   BorderThickness="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- POKUTY -->
+            <TabItem Header="Pokuty">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Správa pokut" FontSize="18" FontWeight="Bold" Foreground="#1F2A37"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <TextBlock Text="Hledat:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Width="360" Height="28" Padding="10,4"
+                                            BorderBrush="#C9D7EE" BorderThickness="1"
+                                            Background="#F8FBFF"/>
+                                    <Button Content="🔍" Width="36" Height="28" Margin="8,0,0,0"
+                                           Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                    <TextBlock Text="Přidat pokutu na pronájem" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#6B7280"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button Content="⬇ Export" Padding="10,6" Margin="0,0,8,0"
+                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                <Button Content="↻" Width="34" Height="30"
+                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="10">
+                        <DataGrid AutoGenerateColumns="False"
+                                 CanUserAddRows="False"
+                                 RowHeaderWidth="0"
+                                 BorderThickness="0"
+                                 AlternatingRowBackground="#F7FAFF">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding ID_Pokuta}" Width="60"/>
+                                <DataGridTextColumn Header="Datum pokuty" Binding="{Binding DatumPokuty}" Width="120"/>
+                                <DataGridTextColumn Header="Zákazník" Binding="{Binding Zakaznik}" Width="220"/>
+                                <DataGridTextColumn Header="Vozidlo" Binding="{Binding Vozidlo}" Width="220"/>
+                                <DataGridTextColumn Header="Částka (Kč)" Binding="{Binding Castka}" Width="120"/>
+                                <DataGridTextColumn Header="Důvod" Binding="{Binding Duvod}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <Border Grid.Row="2" CornerRadius="6" Background="#FFFFFF"
+                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,10,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Pronájem:" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Height="28" Margin="0,0,10,8"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Datum:" VerticalAlignment="Center"/>
+                                <DatePicker Grid.Row="0" Grid.Column="3" Height="28" Margin="0,0,10,8"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="Částka:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="5" Height="28" Margin="0,0,0,8"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Zákazník:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Height="28" Margin="0,0,10,0"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Vozidlo:" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="1" Grid.Column="3" Height="28" Margin="0,0,10,0"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="4" Text="Důvod pokuty:" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="1" Grid.Column="5" Height="28"/>
+                            </Grid>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                                <Button Content="➕ Přidat pokutu"
+                                       Padding="12,7"
+                                       Margin="0,0,8,0"
+                                       Background="#2F80ED"
+                                       Foreground="White"
+                                       BorderThickness="0"
+                                       Cursor="Hand"/>
+                                <Button Content="✎ Upravit" Padding="12,7" Margin="0,0,8,0"
+                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                <Button Content="🗑 Smazat" Padding="12,7"
+                                       Background="#FFFFFF" BorderBrush="#F0B4B4" BorderThickness="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
+ 
