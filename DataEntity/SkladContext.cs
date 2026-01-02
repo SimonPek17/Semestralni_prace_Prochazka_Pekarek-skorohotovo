@@ -18,11 +18,9 @@ namespace DataEntity
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(
-                    "Data Source=(localdb)\\MSSQLLocalDB;" +
-                    "Initial Catalog=SPv1;" +
-                    "Integrated Security=True;" +
-                    "TrustServerCertificate=True").UseLazyLoadingProxies();
+                var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SPv1;Integrated Security=True;TrustServerCertificate=True";
+                optionsBuilder.UseSqlServer(connectionString, opts => opts.EnableRetryOnFailure())
+                              .UseLazyLoadingProxies();
             }
 
 
