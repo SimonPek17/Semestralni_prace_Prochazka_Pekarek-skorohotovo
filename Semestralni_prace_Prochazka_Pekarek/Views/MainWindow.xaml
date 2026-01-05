@@ -77,19 +77,6 @@
                 </TabControl>
 
                 <!-- Right side actions -->
-                <StackPanel DockPanel.Dock="Right"
-                          Orientation="Horizontal"
-                          VerticalAlignment="Center"
-                          HorizontalAlignment="Right"
-                          Margin="10,0,0,0">
-                    <Button Content="⎋ Odhlásit"
-                          Padding="12,6"
-                          Background="#FFFFFF"
-                          BorderBrush="#B7D3FF"
-                          BorderThickness="1"
-                          Cursor="Hand"/>
-                </StackPanel>
-
                 <TextBlock VerticalAlignment="Center"
                          Foreground="#2E3A4A"
                          FontWeight="SemiBold"
@@ -97,7 +84,6 @@
                          Margin="6,0,0,0"/>
             </DockPanel>
         </Border>
-
         <!-- MAIN TABS CONTENT -->
         <TabControl Grid.Row="1"
                   SelectedIndex="{Binding SelectedTabIndex}"
@@ -143,12 +129,6 @@
                             </StackPanel>
 
                             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
-                                <Button Content="⬇ Export"
-                                      Padding="10,6"
-                                      Margin="0,0,8,0"
-                                      Background="#FFFFFF"
-                                      BorderBrush="#C9D7EE"
-                                      BorderThickness="1"/>
                                 <Button Content="↻"
                                       Width="34" Height="30"
                                       Background="#FFFFFF"
@@ -237,7 +217,7 @@
                                       BorderThickness="0"
                                       Cursor="Hand"
                                       Command="{Binding AddZakaznikCommand}"/>
-                                <Button Content="✎ Upravit"
+                                <Button Content="✎ Uložit"
                                       Padding="12,7"
                                       Margin="0,0,8,0"
                                       Background="#FFFFFF"
@@ -262,8 +242,9 @@
             <TabItem Header="Vozidla">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="138*"/>
-                        <ColumnDefinition Width="1015*"/>
+                        <ColumnDefinition Width="69*"/>
+                        <ColumnDefinition Width="14*"/>
+                        <ColumnDefinition Width="493*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -272,7 +253,7 @@
                     </Grid.RowDefinitions>
 
                     <Border Grid.Row="0" CornerRadius="6" Background="#FFFFFF"
-                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10" Grid.ColumnSpan="2">
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -291,18 +272,10 @@
                                     <TextBlock Text="Přidat SPZ až název/model" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#6B7280"/>
                                 </StackPanel>
                             </StackPanel>
-
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Button Content="⬇ Export" Padding="10,6" Margin="0,0,8,0"
-                                      Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
-                                <Button Content="↻" Width="34" Height="30"
-                                      Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
-                            </StackPanel>
                         </Grid>
                     </Border>
-
                     <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
-                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="10" Grid.ColumnSpan="2">
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="10" Grid.ColumnSpan="3">
                         <DataGrid ItemsSource="{Binding Vozidla}"
                                   SelectedItem="{Binding SelectedVozidlo}"
                                   AutoGenerateColumns="False"
@@ -324,7 +297,7 @@
                     </Border>
 
                     <Border Grid.Row="2" CornerRadius="6" Background="#FFFFFF"
-                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,10,0,0" Grid.ColumnSpan="2">
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,10,0,0" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -379,7 +352,7 @@
                                       BorderThickness="0"
                                       Cursor="Hand"
                                       Command="{Binding AddVozidloCommand}"/>
-                                <Button Content="✎ Upravit" Padding="12,7" Margin="0,0,8,0"
+                                <Button Content="✎ Uložit" Padding="12,7" Margin="0,0,8,0"
                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"
                                       Command="{Binding UpdateVozidloCommand}"/>
                                 <Button Content="🗑 Smazat" Padding="12,7"
@@ -421,16 +394,8 @@
                                           Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
                                 </StackPanel>
                             </StackPanel>
-
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Button Content="🧾 Pokladna" Padding="10,6" Margin="0,0,8,0"
-                                      Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
-                                <Button Content="↻" Width="34" Height="30"
-                                      Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
-                            </StackPanel>
                         </Grid>
                     </Border>
-
                     <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
                           BorderBrush="#E3EAF5" BorderThickness="1" Padding="10">
                         <DataGrid ItemsSource="{Binding Pronajmy}"
@@ -535,7 +500,7 @@
                                         BorderThickness="0"
                                         Command="{Binding AddPronajemCommand}"/>
 
-                                <Button Content="✎ Upravit"
+                                <Button Content="✎ Uložit"
                                         Padding="16,8"
                                         Margin="0,0,10,0"
                                         Background="#FFFFFF"
@@ -585,13 +550,6 @@
                                           Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
                                     <TextBlock Text="Přidat pokutu na pronájem" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#6B7280"/>
                                 </StackPanel>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Button Content="⬇ Export" Padding="10,6" Margin="0,0,8,0"
-                                      Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
-                                <Button Content="↻" Width="34" Height="30"
-                                      Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -665,7 +623,7 @@
                                       BorderThickness="0"
                                       Cursor="Hand"
                                       Command="{Binding AddPokutaCommand}"/>
-                                <Button Content="✎ Upravit" Padding="12,7" Margin="0,0,8,0"
+                                <Button Content="✎ Uložit" Padding="12,7" Margin="0,0,8,0"
                                       Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"
                                       Command="{Binding UpdatePokutaCommand}"/>
                                 <Button Content="🗑 Smazat" Padding="12,7"

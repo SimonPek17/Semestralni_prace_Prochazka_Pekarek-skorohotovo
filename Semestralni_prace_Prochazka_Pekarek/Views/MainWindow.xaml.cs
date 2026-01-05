@@ -10,7 +10,6 @@ namespace Semestralni_prace_Prochazka_Pekarek.Views
         {
             InitializeComponent();
 
-            // Runtime DataContext (Designer si s tím poradí)
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 if (DataContext == null)
@@ -20,7 +19,6 @@ namespace Semestralni_prace_Prochazka_Pekarek.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Inicializace DB až po načtení okna
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 

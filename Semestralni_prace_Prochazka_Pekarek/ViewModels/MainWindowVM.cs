@@ -6,6 +6,8 @@ using Semestralni_prace_Prochazka_Pekarek.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace Semestralni_prace_Prochazka_Pekarek.ViewModels
 {
@@ -665,7 +667,7 @@ namespace Semestralni_prace_Prochazka_Pekarek.ViewModels
 
             RefreshPickLists();
         }
-
+        //zkouska pro git
         private void DeletePokuta()
         {
             if (!EnsureDb()) return;
