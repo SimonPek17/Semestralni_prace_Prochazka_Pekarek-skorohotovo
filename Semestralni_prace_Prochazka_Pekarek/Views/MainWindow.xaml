@@ -1,106 +1,640 @@
 ﻿<Window  x:Class="Semestralni_prace_Prochazka_Pekarek.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Semestralni_prace_Prochazka_Pekarek"
-        xmlns:vm="clr-namespace:Semestralni_prace_Prochazka_Pekarek.ViewModels"
-        mc:Ignorable="d"
-        MinHeight="530" MinWidth="450"
-        Title="Správa" Height="550" Width="450" SizeToContent="Width" WindowStartupLocation="CenterScreen">
-    <Grid>
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="clr-namespace:Semestralni_prace_Prochazka_Pekarek"
+      xmlns:vm="clr-namespace:Semestralni_prace_Prochazka_Pekarek.ViewModels"
+      mc:Ignorable="d"
+      Title="Správa" Height="720" Width="1180"
+      WindowStartupLocation="CenterScreen"
+      Background="#F3F6FB"
+      Loaded="Window_Loaded">
+
+    <Window.DataContext>
+        <vm:MainWindowVM/>
+    </Window.DataContext>
+
+    <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel HorizontalAlignment="Center" Margin="10">
+        <!-- TOP BAR -->
+        <Border Grid.Row="0"
+              CornerRadius="6"
+              Background="#D9E9FF"
+              BorderBrush="#B7D3FF"
+              BorderThickness="1"
+              Padding="10"
+              Margin="0,0,0,10">
+            <DockPanel LastChildFill="True">
+                <!-- Tabs -->
+                <TabControl DockPanel.Dock="Left"
+                           SelectedIndex="{Binding SelectedTabIndex}"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           Margin="0,0,10,0"
+                           Height="32">
+                    <TabControl.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="FontSize" Value="13"/>
+                            <Setter Property="Padding" Value="14,6"/>
+                            <Setter Property="Margin" Value="0,0,6,0"/>
+                            <Setter Property="Background" Value="#EAF3FF"/>
+                            <Setter Property="BorderBrush" Value="#B7D3FF"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Background="{TemplateBinding Background}"
+                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                              BorderThickness="{TemplateBinding BorderThickness}"
+                                              CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#FFFFFF"/>
+                                                <Setter Property="BorderBrush" Value="#6AA8FF"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="BorderBrush" Value="#6AA8FF"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.Resources>
 
-            <Image Source="../Images/Logo.png" HorizontalAlignment="Center" Width="256"/>
+                    <TabItem Header="Zákazníci" IsSelected="True"/>
+                    <TabItem Header="Vozidla"/>
+                    <TabItem Header="Pronájmy"/>
+                    <TabItem Header="Pokuty"/>
+                </TabControl>
 
-            <TextBlock Text="Autopůjčovna" FontSize="40"  HorizontalAlignment="Center" Margin="10"
-                       VerticalAlignment="Center"/>
+                <!-- Right side actions -->
+                <TextBlock VerticalAlignment="Center"
+                         Foreground="#2E3A4A"
+                         FontWeight="SemiBold"
+                         Text="Správa systému"
+                         Margin="6,0,0,0"/>
+            </DockPanel>
+        </Border>
+        <!-- MAIN TABS CONTENT -->
+        <TabControl Grid.Row="1"
+                  SelectedIndex="{Binding SelectedTabIndex}"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  Margin="0">
 
+            <!-- ======================= -->
+            <!-- ZAKAZNICI -->
+            <!-- ======================= -->
+            <TabItem Header="Zákazníci">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="11*"/>
+                        <ColumnDefinition Width="133*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
+                    <Border Grid.Row="0" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-        </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="Správa zákazníků" FontSize="18" FontWeight="Bold" Foreground="#1F2A37"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="Hledat:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Width="300" Height="28" Padding="10,4"
+                                           BorderBrush="#C9D7EE" BorderThickness="1"
+                                           Background="#F8FBFF"
+                                           Text=""/>
+                                    <Button Content="🔍" Width="36" Height="28" Margin="8,0,0,0"
+                                          Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                    <TextBlock Text="Přidávat zákaz..." Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#6B7280"/>
+                                </StackPanel>
+                            </StackPanel>
 
-        <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="1"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                                <Button Content="↻"
+                                      Width="34" Height="30"
+                                      Background="#FFFFFF"
+                                      BorderBrush="#C9D7EE"
+                                      BorderThickness="1"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                    <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="10" Grid.ColumnSpan="2">
+                        <DataGrid ItemsSource="{Binding Zakaznici}"
+                                 SelectedItem="{Binding SelectedZakaznik}"
+                                 AutoGenerateColumns="False"
+                                 CanUserAddRows="False"
+                                 HeadersVisibility="Column"
+                                 GridLinesVisibility="Horizontal"
+                                 RowHeaderWidth="0"
+                                 BorderThickness="0"
+                                 Background="White"
+                                 AlternatingRowBackground="#F7FAFF">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding ID_Zakaznik}" Width="60"/>
+                                <DataGridTextColumn Header="Jméno" Binding="{Binding Jmeno}" Width="*"/>
+                                <DataGridTextColumn Header="Příjmení" Binding="{Binding Prijmeni}" Width="*"/>
+                                <DataGridTextColumn Header="Telefon" Binding="{Binding Telefon}" Width="140"/>
+                                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="220"/>
+                                <DataGridTextColumn Header="Počet pronájmů" Binding="{Binding PocetPronajmu}" Width="130"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
 
-            <GroupBox Header="Databáze" Grid.Column="0" 
-                      Margin="10" Padding="5" 
-                       IsEnabled="{Binding TabulkyPovoleny}"
-                      FontSize="16" FontWeight="Bold">
+                    <Border Grid.Row="2" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,10,0,0" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Button Margin="10" Padding="10" FontSize="14" FontWeight="Bold" Width="150"
-                            Command="{Binding OpenMaterialCommand}" Click="Button_Click">
-                        <StackPanel>
-                            <Image Source="../Images/MainMenu/material.png" 
-                                   Width="48" Height="48" Margin="5"/>
-                            <TextBlock Text="Pokuty" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-                    <Button Margin="10" Padding="10" FontSize="14" FontWeight="Bold" Width="150"
-                            Command="{Binding OpenPaletyCommand}">
-                        <StackPanel>
-                            <Image Source="../Images/MainMenu/paleta.png" 
-                                   Width="48" Height="48" Margin="5"/>
-                            <TextBlock Text="Vozidla" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </GroupBox>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Jméno:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Height="28" Margin="0,0,10,8"
+                                         Text="{Binding EditZakaznik.Jmeno, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <GroupBox Header="Dunno" Grid.Column="1" 
-                      Margin="10" Padding="5"                      
-                      FontSize="16" FontWeight="Bold">
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Příjmení:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Height="28" Margin="0,0,10,8"
+                                         Text="{Binding EditZakaznik.Prijmeni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Button Margin="10" Padding="10" FontSize="14" FontWeight="Bold" Width="150"
-                            Command="{Binding OpenPrehledMaterialuCommand}">
-                        <StackPanel>
-                            <Image Source="../Images/MainMenu/prehledmat.png" 
-                                   Width="48" Height="48" Margin="5"/>
-                            <TextBlock Text="Pronájmy" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="Telefon:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="5" Height="28" Margin="0,0,0,8"
+                                         Text="{Binding EditZakaznik.Telefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Button Margin="10" Padding="10" FontSize="14" FontWeight="Bold" Width="150"
-                            Command="{Binding OpenPrehledPaletCommand}">
-                        <StackPanel>
-                            <Image Source="../Images/MainMenu/prehledpal.png" 
-                                   Width="48" Height="48" Margin="5"/>
-                            <TextBlock Text="Zákazníci" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </GroupBox>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Email:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Height="28" Margin="0,0,10,0"
+                                         Text="{Binding EditZakaznik.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        </Grid>
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Adresa:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Height="28" Margin="0,0,10,0"
+                                         Text="{Binding EditZakaznik.Adresa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+                                <TextBlock Grid.Row="1" Grid.Column="4" Text="Počet pronájmů:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="5" Height="28"
+                                         Text="{Binding EditZakaznik.PocetPronajmu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
 
-        <CheckBox  Grid.Row="2"
-                              HorizontalAlignment="Left"
-                              VerticalAlignment="Center"  
-                              FontSize="14"
-                              Margin="5" 
-                              IsChecked="{Binding TabulkyPovoleny, Mode=TwoWay}">
-            <TextBlock Text="Povolit tabulky" Margin="0"/>
-        </CheckBox>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                                <Button Content="➕ Přidat zákazníka"
+                                      Padding="12,7"
+                                      Margin="0,0,8,0"
+                                      Background="#2F80ED"
+                                      Foreground="White"
+                                      BorderThickness="0"
+                                      Cursor="Hand"
+                                      Command="{Binding AddZakaznikCommand}"/>
+                                <Button Content="✎ Uložit"
+                                      Padding="12,7"
+                                      Margin="0,0,8,0"
+                                      Background="#FFFFFF"
+                                      BorderBrush="#C9D7EE"
+                                      BorderThickness="1"
+                                      Command="{Binding UpdateZakaznikCommand}"/>
+                                <Button Content="🗑 Smazat"
+                                      Padding="12,7"
+                                      Background="#FFFFFF"
+                                      BorderBrush="#F0B4B4"
+                                      BorderThickness="1"
+                                      Command="{Binding DeleteZakaznikCommand}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
 
-        <TextBlock Text="(c) 2025 Šimon a Honza" Grid.Row="2" 
-                   HorizontalAlignment="Right"
-                   Margin="5"
-                   VerticalAlignment="Center"/>
+            <!-- ======================= -->
+            <!-- VOZIDLA -->
+            <!-- ======================= -->
+            <TabItem Header="Vozidla">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="69*"/>
+                        <ColumnDefinition Width="14*"/>
+                        <ColumnDefinition Width="493*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
+                    <Border Grid.Row="0" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10" Grid.ColumnSpan="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Správa vozidel" FontSize="18" FontWeight="Bold" Foreground="#1F2A37"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <TextBlock Text="Hledat:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Width="320" Height="28" Padding="10,4"
+                                           BorderBrush="#C9D7EE" BorderThickness="1"
+                                           Background="#F8FBFF"/>
+                                    <Button Content="🔍" Width="36" Height="28" Margin="8,0,0,0"
+                                          Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                    <TextBlock Text="Přidat SPZ až název/model" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#6B7280"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="10" Grid.ColumnSpan="3">
+                        <DataGrid ItemsSource="{Binding Vozidla}"
+                                  SelectedItem="{Binding SelectedVozidlo}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  RowHeaderWidth="0"
+                                  BorderThickness="0"
+                                  AlternatingRowBackground="#F7FAFF">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding ID_Auto}" Width="60"/>
+                                <DataGridTextColumn Header="SPZ" Binding="{Binding SPZ}" Width="120"/>
+                                <DataGridTextColumn Header="Značka" Binding="{Binding Znacka}" Width="140"/>
+                                <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="140"/>
+                                <DataGridTextColumn Header="Rok výroby" Binding="{Binding RokVyroby}" Width="110"/>
+                                <DataGridTextColumn Header="Tachometr (km)" Binding="{Binding StavTachometru}" Width="140"/>
+                                <DataGridTextColumn Header="Denní sazba (Kč)" Binding="{Binding DenniSazba}" Width="140"/>
+                                <DataGridTextColumn Header="Stav" Binding="{Binding Stav}" Width="90"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <Border Grid.Row="2" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,10,0,0" Grid.ColumnSpan="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="SPZ:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Height="28" Margin="0,0,10,8"
+                                         Text="{Binding EditVozidlo.SPZ, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Značka:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Height="28" Margin="0,0,10,8"
+                                         Text="{Binding EditVozidlo.Znacka, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="Model:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="5" Height="28" Margin="0,0,0,8"
+                                         Text="{Binding EditVozidlo.Model, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Tachometr:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Height="28" Margin="0,0,10,0"
+                                         Text="{Binding EditVozidlo.StavTachometru, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Denní sazba:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Height="28" Margin="0,0,10,0"
+                                         Text="{Binding EditVozidlo.DenniSazba, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="4" Text="Stav:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="5" Height="28"
+                                         Text="{Binding EditVozidlo.Stav, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                                <Button Content="➕ Přidat vozidlo"
+                                      Padding="12,7"
+                                      Margin="0,0,8,0"
+                                      Background="#2F80ED"
+                                      Foreground="White"
+                                      BorderThickness="0"
+                                      Cursor="Hand"
+                                      Command="{Binding AddVozidloCommand}"/>
+                                <Button Content="✎ Uložit" Padding="12,7" Margin="0,0,8,0"
+                                      Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"
+                                      Command="{Binding UpdateVozidloCommand}"/>
+                                <Button Content="🗑 Smazat" Padding="12,7"
+                                      Background="#FFFFFF" BorderBrush="#F0B4B4" BorderThickness="1"
+                                      Command="{Binding DeleteVozidloCommand}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- ======================= -->
+            <!-- PRONAJMY -->
+            <!-- ======================= -->
+            <TabItem Header="Pronájmy">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Správa pronájmů" FontSize="18" FontWeight="Bold" Foreground="#1F2A37"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <TextBlock Text="Hledat:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Width="360" Height="28" Padding="10,4"
+                                           BorderBrush="#C9D7EE" BorderThickness="1"
+                                           Background="#F8FBFF"/>
+                                    <Button Content="🔍" Width="36" Height="28" Margin="8,0,0,0"
+                                          Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="10">
+                        <DataGrid ItemsSource="{Binding Pronajmy}"
+                                  SelectedItem="{Binding SelectedPronajem}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  RowHeaderWidth="0"
+                                  BorderThickness="0"
+                                  AlternatingRowBackground="#F7FAFF">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding ID_Pronajem}" Width="60"/>
+                                <DataGridTextColumn Header="Zákazník" Binding="{Binding Zakaznik.Prijmeni}" Width="160"/>
+                                <DataGridTextColumn Header="Jméno" Binding="{Binding Zakaznik.Jmeno}" Width="140"/>
+                                <DataGridTextColumn Header="Vozidlo" Binding="{Binding Vozidlo.SPZ}" Width="120"/>
+                                <DataGridTextColumn Header="Datum od" Binding="{Binding DatumOd}" Width="110"/>
+                                <DataGridTextColumn Header="Datum do" Binding="{Binding DatumDo}" Width="110"/>
+                                <DataGridTextColumn Header="Délka" Binding="{Binding DelkaDni}" Width="70"/>
+                                <DataGridTextColumn Header="Cena (Kč)" Binding="{Binding CenaCelkem}" Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <Border Grid.Row="2"
+                            CornerRadius="6"
+                            Background="#FFFFFF"
+                            BorderBrush="#E3EAF5"
+                            BorderThickness="1"
+                            Padding="16"
+                            Margin="0,10,0,0">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- FORM -->
+                            <Grid Grid.Row="0" Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,8">
+                                    <TextBlock Text="Zákazník"/>
+                                    <ComboBox Height="28"
+                                              ItemsSource="{Binding ZakazniciPick}"
+                                              SelectedItem="{Binding PickZakaznik}"
+                                              DisplayMemberPath="Prijmeni"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,12,8">
+                                    <TextBlock Text="Vozidlo"/>
+                                    <ComboBox Height="28"
+                                              ItemsSource="{Binding VozidlaPick}"
+                                              SelectedItem="{Binding PickVozidlo}"
+                                              DisplayMemberPath="SPZ"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,12,8">
+                                    <TextBlock Text="Datum od"/>
+                                    <DatePicker Height="28"
+                                                SelectedDate="{Binding EditPronajem.DatumOd}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0" Grid.Column="3" Margin="0,0,0,8">
+                                    <TextBlock Text="Datum do"/>
+                                    <DatePicker Height="28"
+                                                SelectedDate="{Binding EditPronajem.DatumDo}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,0">
+                                    <TextBlock Text="Délka (dny)"/>
+                                    <TextBox Height="28" IsReadOnly="True"
+                                             Text="{Binding EditPronajem.DelkaDni}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,12,0">
+                                    <TextBlock Text="Cena celkem (Kč)"/>
+                                    <TextBox Height="28" IsReadOnly="True"
+                                             Text="{Binding EditPronajem.CenaCelkem}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- BUTTONS -->
+                            <StackPanel Grid.Row="1"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,8,0,0">
+
+                                <Button Content="➕ Přidat pronájem"
+                                        Padding="16,8"
+                                        Margin="0,0,10,0"
+                                        Background="#2F80ED"
+                                        Foreground="White"
+                                        BorderThickness="0"
+                                        Command="{Binding AddPronajemCommand}"/>
+
+                                <Button Content="✎ Uložit"
+                                        Padding="16,8"
+                                        Margin="0,0,10,0"
+                                        Background="#FFFFFF"
+                                        BorderBrush="#C9D7EE"
+                                        BorderThickness="1"
+                                        Command="{Binding UpdatePronajemCommand}"/>
+
+                                <Button Content="🗑 Smazat"
+                                        Padding="16,8"
+                                        Background="#FFFFFF"
+                                        BorderBrush="#F0B4B4"
+                                        BorderThickness="1"
+                                        Command="{Binding DeletePronajemCommand}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- ======================= -->
+            <!-- POKUTY -->
+            <!-- ======================= -->
+            <TabItem Header="Pokuty">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Správa pokut" FontSize="18" FontWeight="Bold" Foreground="#1F2A37"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <TextBlock Text="Hledat:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Width="360" Height="28" Padding="10,4"
+                                           BorderBrush="#C9D7EE" BorderThickness="1"
+                                           Background="#F8FBFF"/>
+                                    <Button Content="🔍" Width="36" Height="28" Margin="8,0,0,0"
+                                          Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"/>
+                                    <TextBlock Text="Přidat pokutu na pronájem" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="#6B7280"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="10">
+                        <DataGrid ItemsSource="{Binding Pokuty}"
+                                  SelectedItem="{Binding SelectedPokuta}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  RowHeaderWidth="0"
+                                  BorderThickness="0"
+                                  AlternatingRowBackground="#F7FAFF">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding ID_Pokuta}" Width="60"/>
+                                <DataGridTextColumn Header="Datum" Binding="{Binding DatumPokuty}" Width="120"/>
+                                <DataGridTextColumn Header="Pronájem" Binding="{Binding ID_Pronajem}" Width="90"/>
+                                <DataGridTextColumn Header="Zákazník" Binding="{Binding Pronajem.Zakaznik.Prijmeni}" Width="160"/>
+                                <DataGridTextColumn Header="Vozidlo" Binding="{Binding Pronajem.Vozidlo.SPZ}" Width="120"/>
+                                <DataGridTextColumn Header="Částka" Binding="{Binding Castka}" Width="120"/>
+                                <DataGridTextColumn Header="Důvod" Binding="{Binding Duvod}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <Border Grid.Row="2" CornerRadius="6" Background="#FFFFFF"
+                          BorderBrush="#E3EAF5" BorderThickness="1" Padding="12" Margin="0,10,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Pronájem:" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Height="28" Margin="0,0,10,8"
+                                          ItemsSource="{Binding PronajmyPick}"
+                                          SelectedItem="{Binding PickPronajem}"
+                                          DisplayMemberPath="ID_Pronajem"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Datum:" VerticalAlignment="Center"/>
+                                <DatePicker Grid.Row="0" Grid.Column="3" Height="28" Margin="0,0,0,8"
+                                            SelectedDate="{Binding EditPokuta.DatumPokuty}"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Částka:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Height="28" Margin="0,0,10,0"
+                                         Text="{Binding EditPokuta.Castka, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Důvod:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Height="28"
+                                         Text="{Binding EditPokuta.Duvod, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                                <Button Content="➕ Přidat pokutu"
+                                      Padding="12,7"
+                                      Margin="0,0,8,0"
+                                      Background="#2F80ED"
+                                      Foreground="White"
+                                      BorderThickness="0"
+                                      Cursor="Hand"
+                                      Command="{Binding AddPokutaCommand}"/>
+                                <Button Content="✎ Uložit" Padding="12,7" Margin="0,0,8,0"
+                                      Background="#FFFFFF" BorderBrush="#C9D7EE" BorderThickness="1"
+                                      Command="{Binding UpdatePokutaCommand}"/>
+                                <Button Content="🗑 Smazat" Padding="12,7"
+                                      Background="#FFFFFF" BorderBrush="#F0B4B4" BorderThickness="1"
+                                      Command="{Binding DeletePokutaCommand}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
     </Grid>
 </Window>
